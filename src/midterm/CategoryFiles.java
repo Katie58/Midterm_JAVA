@@ -32,7 +32,8 @@ public class CategoryFiles {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return categoryList;
+		return categoryList;///////////due to reader.close() will need to create getters 
+		///////////////////////////////or a method to close reader when program exits
 	}
 	
 	public static void clearArrays() {
