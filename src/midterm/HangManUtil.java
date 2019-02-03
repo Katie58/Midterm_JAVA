@@ -101,10 +101,8 @@ public class HangManUtil {
 		
 		do {
 			switch(selection) {
-			case 1: play();
-			break;
-//				case 1: displayGame();
-//					break;
+				case 1: displayGame();
+					break;
 				case 2:  difficulty();
 					break;
 				case 3: selectCategory();
