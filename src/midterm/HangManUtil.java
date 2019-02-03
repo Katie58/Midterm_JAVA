@@ -1,7 +1,6 @@
 package midterm;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -58,7 +57,7 @@ public class HangManUtil {
 		}
 
 	public static void highScores() {
-		clearScnr();//******************clearing from main menu select		
+		//clearScnr();//******************clearing from main menu select		
 		System.out.println("===============");
 		System.out.println("| HIGH SCORES |");
 		System.out.println("===============");
@@ -74,6 +73,7 @@ public class HangManUtil {
 			count++;
 		}
 		System.out.print("\nEnter any key to continue... ");
+		scnr.nextLine();
 	}
 	/////////////////////////////// PLAY MENU ///////////////////////////////////
 	public static void playMenu() {/* ENTRY FROM MAIN MENU */
@@ -101,8 +101,10 @@ public class HangManUtil {
 		
 		do {
 			switch(selection) {
-				case 1: displayGame();
-					break;
+			case 1: play();
+			break;
+//				case 1: displayGame();
+//					break;
 				case 2:  difficulty();
 					break;
 				case 3: selectCategory();
@@ -116,7 +118,7 @@ public class HangManUtil {
 	}
 	
 	public static void difficulty() {
-		clearScnr();//********************clearing play menu select
+		//clearScnr();//********************clearing play menu select
 		boolean retry = true;
 		while(retry) {
 			String[] difficulties = new String[] { "easy", "intermediate", "hard", "extreme", "custom" };
@@ -166,13 +168,14 @@ public class HangManUtil {
 	}
 	
 	public static void selectCategory() {
-		clearScnr();//********************clearing play menu select
+		//clearScnr();//********************clearing play menu select
 		CategoryFiles.categoryList();//populate category list from files
 		boolean retry = true;
 		while(retry) {
 			int count = 0;
 			for (String category : CategoryFiles.categories) {//print categories
 				count++;
+				category = category.replace(".txt", "");
 				System.out.println(count + ") " + category);
 			}
 			System.out.print("Select your a category: ");
@@ -185,9 +188,9 @@ public class HangManUtil {
 					break;
 				}
 			}		
-			retry = !askUserYN("You selected " + player.category + ", is this correct? ");//verify
+			retry = !askUserYN("You selected " + player.category.replace(".txt", "") + ", is this correct? ");//verify
 		}	
-		CategoryFiles.categoryList = CategoryFiles.readFile("categories/" + player.category + ".txt");
+		CategoryFiles.categoryList = CategoryFiles.readFile("categories/" + player.category);
 	}
 	/////////////////////////////// PLAY GAME ///////////////////////////////////	
 	public static void play() {/* ENTRY FROM PLAY MENU */
@@ -197,6 +200,7 @@ public class HangManUtil {
 		player.randomWord();//get/set random word from category
 		player.wordArray = player.word.toCharArray();
 		player.correctArray = new char[player.wordArray.length];
+		player.missesArray = new ArrayList<Character>();
 		for (int i = 0; i < player.correctArray.length; i++) {
 			if (validateCharAlpha(player.wordArray[i])) {
 				player.correctArray[i] = '_';
@@ -204,11 +208,10 @@ public class HangManUtil {
 				player.correctArray[i] = player.wordArray[i];
 			}			
 		}
-		player.missesArray.clear();
 		player.win = false;
 		boolean gameOver = false;
 		while(!gameOver) {
-			tempDisplay();////////////////////////////////////////////////////CHANGE BACK TO displayGame();
+			displayGame();
 			guess();
 			gameOver = checkForWin();
 		}
@@ -221,6 +224,9 @@ public class HangManUtil {
 		} else {
 			System.out.println("YOU LOST :(");
 		}
+		if (player.misses != 0) {
+			player.missesArray.clear();	
+		}	
 	}	
 	
 	public static void displayGame() {
@@ -243,37 +249,43 @@ public class HangManUtil {
 		player.guess = ' ';
 		while(!valid) {
 			System.out.print("\nEnter letter: ");
-			String input = scnr.nextLine().trim().toLowerCase();
+			String input = scnr.nextLine().trim();
 			if (!input.isEmpty()) {
 				char guess = input.charAt(0);
 				if (validateCharAlpha(guess)) {
 					player.setGuess(guess);
 					boolean miss = true;
 					int count = 0;
+					char guessLow = input.toLowerCase().charAt(0);
+					char guessUpper = input.toUpperCase().charAt(0);
 					for (char letter : player.correctArray) {
-						if (letter == guess) {
+						if (letter == guessLow || letter == guessUpper) {
 							System.out.print(" already on the board, try again...");
 							miss = false;
 							break;
 						}
 					}
-					for (char letter : player.missesArray) {
-						if (letter == guess) {
-							System.out.print(" already guessed that, try again...");
-							miss = false;
-							break;
-						}
+					if (player.misses != 0) {
+						for (char letter : player.missesArray) {
+							if (letter == guessLow || letter == guessUpper) {
+								System.out.print(" already guessed that, try again...");
+								miss = false;
+								break;
+							}
+						}						
 					}
 					for (char letter : player.wordArray) {
-						if (letter == guess) {
-							player.correctArray[count] = guess;
+						if (letter == guessLow || letter == guessUpper) {
+							player.correctArray[count] = player.wordArray[count];
 							miss = false;
+							valid = true;
 						}
 						count++;
 					}
 					if (miss) {
 						player.missesArray.add(guess);
 						player.misses++;
+						valid = true;
 					}
 				} else {
 					continue;	
@@ -301,6 +313,7 @@ public class HangManUtil {
 		ArrayList<String> highScore = CategoryFiles.readFile("HighScores");
 		if (highScore.size() < 10) {
 			highScore.add(player.time + ":" + player.getUserName());
+			CategoryFiles.writeToFile(highScore, "HighScores");
 			return true;
 		} 
 		int i = 0;
@@ -309,11 +322,11 @@ public class HangManUtil {
 			int time = Integer.parseInt(scoreName[0]);
 			if (player.time < time) {
 				highScore.set(i, player.time + ":" + player.getUserName());
+				CategoryFiles.writeToFile(highScore, "HighScores");
 				return true;
 			}
 			i++;
 		}
-		CategoryFiles.writeToFile(highScore, "HighScores");
 		return false;
 	}
 	
@@ -346,16 +359,12 @@ public class HangManUtil {
 	}
 	
 	public static boolean validateCharAlpha(char character) {
-		if (character != 0) {
-			String charString = Character.toString(character);
-			if (charString.contains("[a-zA-Z]")) {
-				return true;
-			} else {
-				return false;
-			}			
+		String charString = Character.toString(character);
+		if (charString.matches("[a-zA-Z]")) {
+			return true;
 		} else {
 			return false;
-		}
+		}			
 	}
 	/////////////////////////////// YES | NO ////////////////////////////////////
  	public static boolean askUserYN(String question) {//ask user a yes/no question
@@ -384,12 +393,5 @@ public class HangManUtil {
 		String clear = scnr.nextLine();
 	}
 	
-	public static void tempDisplay() {//////////////////////////////////DELETE ME!!!!
-		System.out.println("CATEGORY: " + player.category);
-		System.out.println("WORD: " + player.word);
-		System.out.println("MAX MISSES: " + player.missesMax);
-		System.out.println("CATEGORY: " + player.category);
-		System.out.println("TIMER: " + player.time);
-	}
 }
 

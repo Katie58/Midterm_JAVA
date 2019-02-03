@@ -16,8 +16,7 @@ public class CategoryFiles {
 		File[] files = new File("categories").listFiles();
 		for (File file : files) {
 		    if (file.isFile()) {
-		    	String category = file.getName().replace(".txt", "");
-		        categories.add(category);
+		        categories.add(file.getName());
 		    }
 		}
 		return categories;

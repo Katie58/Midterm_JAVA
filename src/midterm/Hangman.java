@@ -39,14 +39,16 @@ public class Hangman {
 	
 	public void setDefaults() {
 		if (category.equals("default")) {
+			CategoryFiles.categoryList();
 			Random r = new Random();
-			int random = r.nextInt(CategoryFiles.categories.size()) + 1;
-			for (int i = 1; i <= CategoryFiles.categories.size(); i++) {
+			int random = r.nextInt(CategoryFiles.categories.size());
+			for (int i = 0; i < CategoryFiles.categories.size(); i++) {
 				if (i == random) {
 					category = CategoryFiles.categories.get(i);
 					break;
 				}
 			}
+			CategoryFiles.categoryList = CategoryFiles.readFile("categories/" + category);
 		}
 		if (difficulty.equals("default")) {
 			missesMax = 6;
@@ -55,8 +57,8 @@ public class Hangman {
 		
 	public void randomWord() {
 		Random r = new Random();
-		int random = r.nextInt(CategoryFiles.categoryList.size()) + 1;
-		for (int i = 1; i <= CategoryFiles.categoryList.size(); i++) {
+		int random = r.nextInt(CategoryFiles.categoryList.size());
+		for (int i = 0; i < CategoryFiles.categoryList.size(); i++) {
 			if (i == random) {
 				word = CategoryFiles.categoryList.get(i);
 				break;
