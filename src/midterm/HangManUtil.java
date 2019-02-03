@@ -125,7 +125,7 @@ public class HangManUtil {
 			System.out.print("Choose your difficulty level: ");
 			int select = validateMenu(difficulties.length);
 			player.difficulty = difficulties[select - 1];
-			retry = askUserYN("You selected " + player.difficulty + ", is this correct? ");			
+			retry = !askUserYN("You selected " + player.difficulty + ", is this correct? ");			
 		}
 		switch(player.difficulty) {
 		case "easy": player.missesMax = 10;
@@ -148,11 +148,19 @@ public class HangManUtil {
 			if (scnr.hasNextInt()) {
 				player.missesMax = scnr.nextInt();
 				scnr.nextLine();
+				if (player.missesMax < 1) {
+					System.out.println("That's impossible!!!! try again...");
+					continue;
+				}
+				if (player.missesMax > 26) {
+					System.out.println("There are only 26 letters in the alphabet, try again...");
+					continue;
+				}
 			} else {
 				System.out.println("Is your numlock on? try again... ");
 				continue;
 			}
-			retry = askUserYN("Are you sure you can win in " + player.missesMax + "?");
+			retry = !askUserYN("Are you sure you can win in " + player.missesMax + " tries?");
 		}		
 	}
 	
@@ -176,7 +184,7 @@ public class HangManUtil {
 					break;
 				}
 			}		
-			retry = askUserYN("You selected " + player.category + ", is this correct? ");//verify
+			retry = !askUserYN("You selected " + player.category + ", is this correct? ");//verify
 		}	
 		CategoryFiles.categoryList = CategoryFiles.readFile("categories/" + player.category + ".txt");
 	}
@@ -364,7 +372,13 @@ public class HangManUtil {
 	public static void exit() {
 		System.out.println("Nice playing with you, catch you later!");
 		scnr.close();
-		CategoryFiles.closeReader();
+		if (player.word != null) {
+			CategoryFiles.closeReader();
+		}		
+	}
+	//////////////////////////// CLEAR SCANNER ///////////////////////////////////
+	public static void clearScnr() {
+		String clear = scnr.nextLine();//********************clearing menu select
 	}
 }
 
