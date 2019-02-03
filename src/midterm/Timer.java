@@ -2,7 +2,7 @@ package midterm;
 
 import java.util.TimerTask;
 
-public class Testing {
+public class Timer {
 	
 	private int time = 0;
 		
@@ -10,7 +10,7 @@ public class Testing {
 		return time;
 	}
 	
-	public Testing()
+	public Timer()
 	{
 	  final java.util.Timer tmr = new java.util.Timer();
 	  tmr.scheduleAtFixedRate(new TimerTask()

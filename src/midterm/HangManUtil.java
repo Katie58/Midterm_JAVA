@@ -1,6 +1,8 @@
 package midterm;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class HangManUtil {
 	static Scanner scnr = new Scanner(System.in);
@@ -43,7 +45,7 @@ public class HangManUtil {
 			switch(selection) {
 				case 1: playMenu();
 					break;
-				case 2:  System.out.println("High Score");
+				case 2: highScores();
 					break;
 				case 3: exit();
 					break;
@@ -54,9 +56,21 @@ public class HangManUtil {
 		
 		}
 
-//	public static void highScores() {
-//		/* extended challenge */
-//	}
+	public static void highScores() {
+		System.out.println("===============");
+		System.out.println("| HIGH SCORES |");
+		System.out.println("===============");
+		ArrayList<String> highScore = CategoryFiles.readFile("HighScore");
+		TreeSet<String> ordered = new TreeSet<String>();
+		for (String score : highScore) {
+			ordered.add(score);
+		}
+		int count = 1;
+		for (String score : ordered) {
+			String[] timeName = score.split(":");
+			System.out.println(count + ". " + timeName[1] + "....." + timeName[2]);
+		}
+	}
 	/////////////////////////////// PLAY MENU ///////////////////////////////////
 	public static void playMenu() {/* ENTRY FROM MAIN MENU */
 		/* display menu, take user selection, send to corresponding method */
@@ -156,10 +170,12 @@ public class HangManUtil {
 				}
 			}		
 			retry = askUserYN("You selected " + player.category + ", is this correct? ");//verify
-		}		
+		}	
+		CategoryFiles.categoryList = CategoryFiles.readFile("categories/" + player.category + ".txt");
 	}
 	/////////////////////////////// PLAY GAME ///////////////////////////////////	
 	public static void play() {/* ENTRY FROM PLAY MENU */
+		Timer timer = new Timer();
 		player.randomWord();//get/set random word from category
 		player.wordArray = player.word.toCharArray();
 		player.correctArray = new char[player.wordArray.length];
@@ -172,7 +188,11 @@ public class HangManUtil {
 			gameOver = checkForWin();
 		}
 		if (player.win) {
-			System.out.println("Congratulations! YOU WON!!!");
+			player.time = timer.getTime();
+			System.out.println("Congratulations! YOU WON!!! in " + player.time + " seconds!");
+			if (addHighScore()) {
+				System.out.println("*****NEW HIGH SCORE*****");
+			}
 		} else {
 			System.out.println("YOU LOST :(");
 		}
@@ -257,6 +277,25 @@ public class HangManUtil {
 		} else {
 			return false;
 		}
+	}
+	
+	public static boolean addHighScore() {
+		ArrayList<String> highScore = CategoryFiles.readFile("HighScore");
+		if (highScore.size() < 10) {
+			highScore.add(player.time + ":" + player.getUserName());
+			return true;
+		} 
+		int i = 0;
+		for (String score : highScore) {
+			String[] scoreName = score.split(":");
+			int time = Integer.parseInt(scoreName[0]);
+			if (player.time < time) {
+				highScore.set(i, player.time + ":" + player.getUserName());
+				return true;
+			}
+			i++;
+		}
+		return false;
 	}
 	
 //	public static void displayGameOver() {

@@ -17,7 +17,7 @@ public class Hangman {
 	public int misses;
 	public char guess;
 	public boolean win;
-	//public int score;//possible extended challenge
+	public int time;
 	
 	public Hangman() {
 	}
@@ -38,7 +38,6 @@ public class Hangman {
 	}
 		
 	public void randomWord() {
-		CategoryFiles.readFile(category);
 		Random r = new Random();
 		int random = r.nextInt(CategoryFiles.categoryList.size()) + 1;
 		for (int i = 1; i <= CategoryFiles.categoryList.size(); i++) {

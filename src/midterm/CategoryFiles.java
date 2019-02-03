@@ -20,19 +20,23 @@ public class CategoryFiles {
 		return categories;
 	}
 	
-	public static ArrayList<String> readFile(String category) {
-		
+	public static ArrayList<String> readFile(String dir) {	
+		ArrayList<String> aList = new ArrayList<String>();
 		try {
-			reader = new BufferedReader(new FileReader("categories/" + category + ".txt"));
+			reader = new BufferedReader(new FileReader(dir));
 			String line = reader.readLine();
 			while (line != null) {
 				line = reader.readLine();
-				categoryList.add(line);
+				aList.add(line);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return categoryList;
+		return aList;
+	}
+	
+	public static void writeToFile() {
+		
 	}
 	
 	public static void clearArrays() {
