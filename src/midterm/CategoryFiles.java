@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public class CategoryFiles {
 	static BufferedReader reader;
-	static ArrayList<String> categories = new ArrayList<String>();
-	static ArrayList<String> categoryList = new ArrayList<String>();
+	static ArrayList<String> categories = new ArrayList<String>();//list of files
+	static ArrayList<String> categoryList = new ArrayList<String>();//list of words in category file
 
-	public static ArrayList<String> categoryList() {		
+	public static ArrayList<String> categoryList() {//gets file names and stores in list		
 		File[] files = new File("categories").listFiles();
 		for (File file : files) {
 		    if (file.isFile()) {

@@ -8,8 +8,7 @@ public class HangManUtil {
 	
 
 	/////////////////////////////// GREETING ////////////////////////////////////
-	public static void greeting() {
-		/* get user name and store in object */
+	public static void greeting() {//get user name, store in object
 		String name;
 		System.out.print("Welcome to Hangman what is your name?: ");
 		name = scnr.nextLine();
@@ -99,18 +98,72 @@ public class HangManUtil {
 	}
 	
 	public static void difficulty() {
-		/* set missesMax */
+		boolean retry = true;
+		while(retry) {
+			String[] difficulties = new String[] { "easy", "intermediate", "hard", "extreme", "custom" };
+			for (int i = 0; i < difficulties.length; i++) {
+				System.out.println((i + 1) + ". " + difficulties[i]);
+			}
+			int select = validateMenu(difficulties.length);
+			player.difficulty = difficulties[select];
+			retry = askUserYN("You selected " + player.difficulty + ", is this correct? ");			
+		}
+		switch(player.difficulty) {
+		case "easy": player.missesMax = 10;
+		break;
+		case "intermediate": player.missesMax = 5;
+		break;
+		case "hard": player.missesMax = 3;
+		break;
+		case "extreme": player.missesMax = 1;
+		break;
+		case "custom": customMisses();
+		break;
+		}
+	}
+	
+	public static void customMisses() {
+		boolean retry = true;
+		while(retry) {
+			System.out.print("How many tries do you plan to give yourself? ");
+			if (scnr.hasNextInt()) {
+				player.missesMax = scnr.nextInt();
+				scnr.nextLine();
+			} else {
+				System.out.println("Is your numlock on? try again... ");
+				continue;
+			}
+			retry = askUserYN("Are you sure you can win in " + player.missesMax + "?");
+		}		
 	}
 	
 	public static void selectCategory() {
-		/* CategoryFiles */
-		/* display categories by looping CategoryFiles.categoryList();
-		/* get user selection, read file, set random word */
-		/* perhaps default picks random category */
-		/* clear lists when done */
+		CategoryFiles.categoryList();//populate category list from files
+		boolean retry = true;
+		while(retry) {
+			int count = 0;
+			for (String category : CategoryFiles.categories) {//print categories
+				count++;
+				System.out.println(count + ". " + category);
+			}
+			int select = validateMenu(CategoryFiles.categories.size());//user select category
+			count = 0;
+			for (String category : CategoryFiles.categories) {//set category
+				count++;
+				if (select == count) {
+					player.category = category;
+					break;
+				}
+			}		
+			retry = askUserYN("You selected " + player.category + ", is this correct? ");//verify
+		}		
 	}
 	/////////////////////////////// PLAY GAME ///////////////////////////////////	
 	public static void play() {/* ENTRY FROM PLAY MENU */
+		player.randomWord();//get/set random word from category
+		player.wordArray = player.word.toCharArray();
+		player.correctArray = new char[player.wordArray.length];
+		player.missesArray.clear();
 		player.win = false;
 		boolean gameOver = false;
 		while(!gameOver) {
