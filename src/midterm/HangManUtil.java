@@ -57,6 +57,7 @@ public class HangManUtil {
 		}
 
 	public static void highScores() {
+		String clear = scnr.nextLine();//******************clearing from menu select		
 		System.out.println("===============");
 		System.out.println("| HIGH SCORES |");
 		System.out.println("===============");
@@ -71,7 +72,6 @@ public class HangManUtil {
 			System.out.println(count + ". " + timeName[1] + "....." + timeName[0]);
 			count++;
 		}
-		String clear = scnr.nextLine();//**********************menu not clearing needs fix
 		System.out.print("\nEnter any key to continue... ");
 	}
 	/////////////////////////////// PLAY MENU ///////////////////////////////////
@@ -115,14 +115,16 @@ public class HangManUtil {
 	}
 	
 	public static void difficulty() {
+		String clear = scnr.nextLine();//********************clearing menu select
 		boolean retry = true;
 		while(retry) {
 			String[] difficulties = new String[] { "easy", "intermediate", "hard", "extreme", "custom" };
 			for (int i = 0; i < difficulties.length; i++) {
-				System.out.println((i + 1) + ". " + difficulties[i]);
+				System.out.println((i + 1) + ") " + difficulties[i]);
 			}
+			System.out.print("Choose your difficulty level: ");
 			int select = validateMenu(difficulties.length);
-			player.difficulty = difficulties[select];
+			player.difficulty = difficulties[select - 1];
 			retry = askUserYN("You selected " + player.difficulty + ", is this correct? ");			
 		}
 		switch(player.difficulty) {
@@ -155,14 +157,16 @@ public class HangManUtil {
 	}
 	
 	public static void selectCategory() {
+		String clear = scnr.nextLine();//********************clearing menu select
 		CategoryFiles.categoryList();//populate category list from files
 		boolean retry = true;
 		while(retry) {
 			int count = 0;
 			for (String category : CategoryFiles.categories) {//print categories
 				count++;
-				System.out.println(count + ". " + category);
+				System.out.println(count + ") " + category);
 			}
+			System.out.print("Select your a category: ");
 			int select = validateMenu(CategoryFiles.categories.size());//user select category
 			count = 0;
 			for (String category : CategoryFiles.categories) {//set category
@@ -344,7 +348,7 @@ public class HangManUtil {
 	}
 	/////////////////////////////// YES | NO ////////////////////////////////////
  	public static boolean askUserYN(String question) {//ask user a yes/no question
- 		String clear = scnr.nextLine();//********************menu not clearing, needs fix
+ 		//String clear = scnr.nextLine();//********************clearing menu select won't work because I call this method at other times throughout program
 		System.out.print("\n" + question + " (y/n) ");
 		return validateYesNo(scnr.nextLine().charAt(0));
 	}
