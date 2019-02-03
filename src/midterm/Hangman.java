@@ -27,5 +27,5 @@ public class Hangman {
 	public char getGuess() {
 		return guess;
 	}
-		
+	
 }

@@ -142,10 +142,6 @@ public class HangManUtil {
 		}
 		return (input == 'y' || input == 'Y');
 	}
-	///////////////////////////// CLEAR/RESET  /////////////////////////////////
-	public static void clearArrays() {
-		player.correctArray.cl
-	}
 	//////////////////////////////// EXIT //////////////////////////////////////
 	public static void exit() {
 		System.out.println("Nice playing with you, catch you later!");
