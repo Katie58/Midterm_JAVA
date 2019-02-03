@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class CategoryFiles {
+	static BufferedReader reader;
 	static ArrayList<String> categories = new ArrayList<String>();
 	static ArrayList<String> categoryList = new ArrayList<String>();
 
@@ -20,7 +21,7 @@ public class CategoryFiles {
 	}
 	
 	public static ArrayList<String> readFile(String category) {
-		BufferedReader reader;
+		
 		try {
 			reader = new BufferedReader(new FileReader("categories/" + category + ".txt"));
 			String line = reader.readLine();
@@ -28,17 +29,23 @@ public class CategoryFiles {
 				line = reader.readLine();
 				categoryList.add(line);
 			}
-			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return categoryList;///////////due to reader.close() will need to create getters 
-		///////////////////////////////or a method to close reader when program exits
+		return categoryList;
 	}
 	
 	public static void clearArrays() {
 		categories.clear();
 		categoryList.clear();
+	}
+	
+	public static void closeReader() {
+		try {
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -54,7 +54,43 @@ public class HangManUtil {
 //	}
 	
 	public static void guess() {
-		/* send to validate which will get input, check if correct, adjust arrays & misses */
+		boolean valid = false;
+		player.guess = ' ';
+		while(!valid) {
+			System.out.print("\nEnter letter: ");
+			String input = scnr.nextLine().trim().toLowerCase();
+			char guess = input.charAt(0);
+			if (validateCharAlpha(guess)) {
+				player.setGuess(guess);
+				boolean miss = true;
+				int count = 0;
+				for (char letter : player.correctArray) {
+					if (letter == guess) {
+						System.out.print(" already on the board, try again...");
+						continue;
+					}
+				}
+				for (char letter : player.missesArray) {
+					if (letter == guess) {
+						System.out.print(" already guessed that, try again...");
+						continue;
+					}
+				}
+				for (char letter : player.wordArray) {
+					if (letter == guess) {
+						player.correctArray[count] = guess;
+						miss = false;
+					}
+					count++;
+				}
+				if (miss) {
+					player.missesArray.add(guess);
+					player.misses++;
+				}
+			} else {
+				continue;
+			}
+		}	
 	}
 	
 //	public static void displayGameOver() {
@@ -85,15 +121,12 @@ public class HangManUtil {
 		return input;
 	}
 	
-	public static void validateGuess() {
-		boolean valid = false;
-		player.guess = ' ';
-		while(!valid) {
-			/* request input, store as string */
-			/* input.trim() & input.toLowerCase */
-			/* if input > 1, continue; */
-			/* if not [a-z] continue; */
-			/* else, valid = true; */
+	public static boolean validateCharAlpha(char character) {
+		String charString = Character.toString(character);
+		if (charString.contains("[a-zA-Z]")) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 	/////////////////////////////// YES | NO ////////////////////////////////////
@@ -109,10 +142,15 @@ public class HangManUtil {
 		}
 		return (input == 'y' || input == 'Y');
 	}
+	///////////////////////////// CLEAR/RESET  /////////////////////////////////
+	public static void clearArrays() {
+		player.correctArray.cl
+	}
 	//////////////////////////////// EXIT //////////////////////////////////////
 	public static void exit() {
-		/* sysout goodbye message */
+		System.out.println("Nice playing with you, catch you later!");
 		scnr.close();
+		CategoryFiles.closeReader();
 	}
 }
 
