@@ -37,7 +37,22 @@ public class HangManUtil {
 		/* perhaps default picks random category */
 		/* clear lists when done */
 	}
-	/////////////////////////////// PLAY GAME ///////////////////////////////////
+	/////////////////////////////// PLAY GAME ///////////////////////////////////	
+	public static void play() {/* ENTRY FROM PLAY MENU */
+		player.win = false;
+		boolean gameOver = false;
+		while(!gameOver) {
+			displayGame();
+			guess();
+			gameOver = checkForWin();
+		}
+		if (player.win) {
+			System.out.println("Congratulations! YOU WON!!!");
+		} else {
+			System.out.println("YOU LOST :(");
+		}
+	}	
+	
 	public static void displayGame() {
 		/* create switch and/or enum to display underscores & correctly guessed chars */
 		/* display current misses and/or available misses */
@@ -52,21 +67,6 @@ public class HangManUtil {
 //		}
 //		return multiples;
 //	}
-	
-	public static void play() {
-		player.win = false;
-		boolean gameOver = false;
-		while(!gameOver) {
-			displayGame();
-			guess();
-			gameOver = checkForWin();
-		}
-		if (player.win) {
-			System.out.println("Congratulations! YOU WON!!!");
-		} else {
-			System.out.println("YOU LOST :(");
-		}
-	}
 	
 	public static void guess() {
 		boolean valid = false;
