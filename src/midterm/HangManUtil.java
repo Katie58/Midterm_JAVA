@@ -57,7 +57,7 @@ public class HangManUtil {
 		}
 
 	public static void highScores() {
-		String clear = scnr.nextLine();//******************clearing from menu select		
+		clearScnr();//******************clearing from main menu select		
 		System.out.println("===============");
 		System.out.println("| HIGH SCORES |");
 		System.out.println("===============");
@@ -115,7 +115,7 @@ public class HangManUtil {
 	}
 	
 	public static void difficulty() {
-		String clear = scnr.nextLine();//********************clearing menu select
+		clearScnr();//********************clearing play menu select
 		boolean retry = true;
 		while(retry) {
 			String[] difficulties = new String[] { "easy", "intermediate", "hard", "extreme", "custom" };
@@ -165,7 +165,7 @@ public class HangManUtil {
 	}
 	
 	public static void selectCategory() {
-		String clear = scnr.nextLine();//********************clearing menu select
+		clearScnr();//********************clearing play menu select
 		CategoryFiles.categoryList();//populate category list from files
 		boolean retry = true;
 		while(retry) {
@@ -190,6 +190,7 @@ public class HangManUtil {
 	}
 	/////////////////////////////// PLAY GAME ///////////////////////////////////	
 	public static void play() {/* ENTRY FROM PLAY MENU */
+		clearScnr();//**************clearing from play menu select
 		Timer timer = new Timer();
 		player.randomWord();//get/set random word from category
 		player.wordArray = player.word.toCharArray();
@@ -378,7 +379,7 @@ public class HangManUtil {
 	}
 	//////////////////////////// CLEAR SCANNER ///////////////////////////////////
 	public static void clearScnr() {
-		String clear = scnr.nextLine();//********************clearing menu select
+		String clear = scnr.nextLine();
 	}
 }
 
