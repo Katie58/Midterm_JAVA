@@ -35,7 +35,7 @@ public class HangManUtil {
 				selection = scnr.nextInt();
 			} catch(InputMismatchException e) {
 				System.out.println("Invalid input. Please try again.");
-				clear = scnr.nextLine();
+				clear = scnr.nextLine();///////////menu not clearing, needs to move to try
 				continue;
 			}
 			
@@ -47,7 +47,7 @@ public class HangManUtil {
 					break;
 				case 2: highScores();
 					break;
-				case 3: exit();
+				case 3: ;/////////////////wasn't exiting program, I deleted exit() to test
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
@@ -60,7 +60,7 @@ public class HangManUtil {
 		System.out.println("===============");
 		System.out.println("| HIGH SCORES |");
 		System.out.println("===============");
-		ArrayList<String> highScore = CategoryFiles.readFile("HighScore");
+		ArrayList<String> highScore = CategoryFiles.readFile("HighScores");
 		TreeSet<String> ordered = new TreeSet<String>();
 		for (String score : highScore) {
 			ordered.add(score);
@@ -68,8 +68,11 @@ public class HangManUtil {
 		int count = 1;
 		for (String score : ordered) {
 			String[] timeName = score.split(":");
-			System.out.println(count + ". " + timeName[1] + "....." + timeName[2]);
+			System.out.println(count + ". " + timeName[1] + "....." + timeName[0]);
+			count++;
 		}
+		String clear = scnr.nextLine();//**********************menu not clearing needs fix
+		System.out.print("\nEnter any key to continue... ");
 	}
 	/////////////////////////////// PLAY MENU ///////////////////////////////////
 	public static void playMenu() {/* ENTRY FROM MAIN MENU */
@@ -280,7 +283,7 @@ public class HangManUtil {
 	}
 	
 	public static boolean addHighScore() {
-		ArrayList<String> highScore = CategoryFiles.readFile("HighScore");
+		ArrayList<String> highScore = CategoryFiles.readFile("HighScores");
 		if (highScore.size() < 10) {
 			highScore.add(player.time + ":" + player.getUserName());
 			return true;
@@ -295,6 +298,7 @@ public class HangManUtil {
 			}
 			i++;
 		}
+		CategoryFiles.writeToFile(highScore, "HighScores");
 		return false;
 	}
 	
@@ -340,6 +344,7 @@ public class HangManUtil {
 	}
 	/////////////////////////////// YES | NO ////////////////////////////////////
  	public static boolean askUserYN(String question) {//ask user a yes/no question
+ 		String clear = scnr.nextLine();//********************menu not clearing, needs fix
 		System.out.print("\n" + question + " (y/n) ");
 		return validateYesNo(scnr.nextLine().charAt(0));
 	}
