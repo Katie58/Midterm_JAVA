@@ -56,6 +56,7 @@ public class HangManUtil {
 	public static void guess() {
 		boolean valid = false;
 		player.guess = ' ';
+		restartLoop:
 		while(!valid) {
 			System.out.print("\nEnter letter: ");
 			String input = scnr.nextLine().trim().toLowerCase();
@@ -67,13 +68,13 @@ public class HangManUtil {
 				for (char letter : player.correctArray) {
 					if (letter == guess) {
 						System.out.print(" already on the board, try again...");
-						continue;
+						continue restartLoop;
 					}
 				}
 				for (char letter : player.missesArray) {
 					if (letter == guess) {
 						System.out.print(" already guessed that, try again...");
-						continue;
+						continue restartLoop;
 					}
 				}
 				for (char letter : player.wordArray) {
@@ -89,6 +90,17 @@ public class HangManUtil {
 				}
 			} else {
 				continue;
+			}
+			for (int i = 0; i < player.wordArray.length; i++) {
+				if (validateCharAlpha(player.correctArray[i])) {
+					if (player.correctArray[i] != player.wordArray[i]) {
+						continue restartLoop;
+					} else {
+						valid = true;
+					}
+				} else {
+					continue restartLoop;
+				}
 			}
 		}	
 	}
