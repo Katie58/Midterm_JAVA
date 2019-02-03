@@ -8,7 +8,7 @@ public class MidTerm {
 		HangManUtil.greeting();		
 		while(retry) {
 			HangManUtil.menu();
-			retry = HangManUtil.askUserYN("Are you sure you would like to exit?");
+			retry = !HangManUtil.askUserYN("Are you sure you would like to exit?");
 		}
 		HangManUtil.exit();
 	}
