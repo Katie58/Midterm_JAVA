@@ -1,6 +1,7 @@
 package midterm;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -192,14 +193,22 @@ public class HangManUtil {
 	public static void play() {/* ENTRY FROM PLAY MENU */
 		clearScnr();//**************clearing from play menu select
 		Timer timer = new Timer();
+		player.setDefaults();
 		player.randomWord();//get/set random word from category
 		player.wordArray = player.word.toCharArray();
 		player.correctArray = new char[player.wordArray.length];
+		for (int i = 0; i < player.correctArray.length; i++) {
+			if (validateCharAlpha(player.wordArray[i])) {
+				player.correctArray[i] = '_';
+			} else {
+				player.correctArray[i] = player.wordArray[i];
+			}			
+		}
 		player.missesArray.clear();
 		player.win = false;
 		boolean gameOver = false;
 		while(!gameOver) {
-			displayGame();
+			tempDisplay();////////////////////////////////////////////////////CHANGE BACK TO displayGame();
 			guess();
 			gameOver = checkForWin();
 		}
@@ -277,22 +286,15 @@ public class HangManUtil {
 	
 	public static boolean checkForWin() {
 		if (player.misses == player.missesMax) {
-			for (int i = 0; i < player.wordArray.length; i++) {
-				if (validateCharAlpha(player.correctArray[i])) {
-					if (player.correctArray[i] != player.wordArray[i]) {
-						System.out.println("ERROR - restarting game...");
-						return true;
-					} 
-				} else {
-					System.out.println("ERROR - restarting game...");
-					return true;
-				}
-			}	
-			player.win = true;
 			return true;
-		} else {
-			return false;
 		}
+		for (int i = 0; i < player.wordArray.length; i++) {
+			if (player.correctArray[i] != player.wordArray[i]) {
+				return false;
+			}
+		}	
+		player.win = true;
+		return true;
 	}
 	
 	public static boolean addHighScore() {
@@ -380,6 +382,14 @@ public class HangManUtil {
 	//////////////////////////// CLEAR SCANNER ///////////////////////////////////
 	public static void clearScnr() {
 		String clear = scnr.nextLine();
+	}
+	
+	public static void tempDisplay() {//////////////////////////////////DELETE ME!!!!
+		System.out.println("CATEGORY: " + player.category);
+		System.out.println("WORD: " + player.word);
+		System.out.println("MAX MISSES: " + player.missesMax);
+		System.out.println("CATEGORY: " + player.category);
+		System.out.println("TIMER: " + player.time);
 	}
 }
 

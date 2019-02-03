@@ -36,6 +36,22 @@ public class Hangman {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	
+	public void setDefaults() {
+		if (category.equals("default")) {
+			Random r = new Random();
+			int random = r.nextInt(CategoryFiles.categories.size()) + 1;
+			for (int i = 1; i <= CategoryFiles.categories.size(); i++) {
+				if (i == random) {
+					category = CategoryFiles.categories.get(i);
+					break;
+				}
+			}
+		}
+		if (difficulty.equals("default")) {
+			missesMax = 6;
+		}
+	}
 		
 	public void randomWord() {
 		Random r = new Random();
