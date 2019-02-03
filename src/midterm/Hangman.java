@@ -11,5 +11,11 @@ public class Hangman {
 	public int misses;
 	public char guess;
 	//public int score;//possible extended challenge
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 		
 }

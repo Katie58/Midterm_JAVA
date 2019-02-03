@@ -1,13 +1,19 @@
 package midterm;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class HangManUtil {
 	static Scanner scnr = new Scanner(System.in);
 	static Hangman player = new Hangman();
+	
 
 	/////////////////////////////// GREETING ////////////////////////////////////
 	public static void greeting() {
 		/* get user name and store in object */
+		String name;
+		System.out.print("Welcome to Hangman what is your name?: ");
+		name = scnr.nextLine();
+		player.setUserName(name);
 	}
 	////////////////////////////// MAIN MENU ////////////////////////////////////
 	public static void menu() {/* ENTRY FROM MAIN METHOD */
@@ -15,7 +21,39 @@ public class HangManUtil {
 		/* menu items: 1. Play Game 2. High Scores */
 		/* method can be bypassed and deleted if timer/score not implemented */
 		/* extended challenge 2-player, let a player choose word */
-	}
+		int selection = 0;
+		String clear;
+		
+		System.out.println("1) Play Menu");
+		System.out.println("2) High Scores");
+		System.out.println("3) Exit");
+		
+		do {
+			try {
+				System.out.print(player.getUserName() + " what would you like to do?: ");
+				selection = scnr.nextInt();
+			} catch(InputMismatchException e) {
+				System.out.println("Invalid input. Please try again.");
+				clear = scnr.nextLine();
+				continue;
+			}
+			
+		} while(false);
+		
+		do {
+			switch(selection) {
+				case 1: playMenu();
+					break;
+				case 2:  System.out.println("High Score");
+					break;
+				case 3: exit();
+					break;
+				default: System.out.println("Invalid input! Please try again.");
+					continue;
+			}
+		} while (false);
+		
+		}
 
 //	public static void highScores() {
 //		/* extended challenge */
@@ -24,6 +62,40 @@ public class HangManUtil {
 	public static void playMenu() {/* ENTRY FROM MAIN MENU */
 		/* display menu, take user selection, send to corresponding method */
 		/* menu items: 1. Play Game 2. Difficulty 3. Select Category 4. Exit */
+		int selection = 0;
+		String clear;
+		
+		System.out.println("1) Play Game");
+		System.out.println("2) Difficulty");
+		System.out.println("3) Select Category");
+		System.out.println("4) Exit");
+		
+		do {
+			try {
+				System.out.print(player.getUserName() + " what would you like to do?: ");
+				selection = scnr.nextInt();
+			} catch(InputMismatchException e) {
+				System.out.println("Invalid input. Please try again.");
+				clear = scnr.nextLine();
+				continue;
+			}
+			
+		} while(false);
+		
+		do {
+			switch(selection) {
+				case 1: displayGame();
+					break;
+				case 2:  difficulty();
+					break;
+				case 3: selectCategory();
+					break;
+				case 4: exit();
+					break;
+				default: System.out.println("Invalid input! Please try again.");
+					continue;
+			}
+		} while(false);
 	}
 	
 	public static void difficulty() {
