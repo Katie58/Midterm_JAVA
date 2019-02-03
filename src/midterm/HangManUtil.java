@@ -53,56 +53,85 @@ public class HangManUtil {
 //		return multiples;
 //	}
 	
+	public static void play() {
+		player.win = false;
+		boolean gameOver = false;
+		while(!gameOver) {
+			displayGame();
+			guess();
+			gameOver = checkForWin();
+		}
+		if (player.win) {
+			System.out.println("Congratulations! YOU WON!!!");
+		} else {
+			System.out.println("YOU LOST :(");
+		}
+	}
+	
 	public static void guess() {
 		boolean valid = false;
 		player.guess = ' ';
-		restartLoop:
 		while(!valid) {
 			System.out.print("\nEnter letter: ");
 			String input = scnr.nextLine().trim().toLowerCase();
-			char guess = input.charAt(0);
-			if (validateCharAlpha(guess)) {
-				player.setGuess(guess);
-				boolean miss = true;
-				int count = 0;
-				for (char letter : player.correctArray) {
-					if (letter == guess) {
-						System.out.print(" already on the board, try again...");
-						continue restartLoop;
+			if (!input.isEmpty()) {
+				char guess = input.charAt(0);
+				if (validateCharAlpha(guess)) {
+					player.setGuess(guess);
+					boolean miss = true;
+					int count = 0;
+					for (char letter : player.correctArray) {
+						if (letter == guess) {
+							System.out.print(" already on the board, try again...");
+							miss = false;
+							break;
+						}
 					}
-				}
-				for (char letter : player.missesArray) {
-					if (letter == guess) {
-						System.out.print(" already guessed that, try again...");
-						continue restartLoop;
+					for (char letter : player.missesArray) {
+						if (letter == guess) {
+							System.out.print(" already guessed that, try again...");
+							miss = false;
+							break;
+						}
 					}
-				}
-				for (char letter : player.wordArray) {
-					if (letter == guess) {
-						player.correctArray[count] = guess;
-						miss = false;
+					for (char letter : player.wordArray) {
+						if (letter == guess) {
+							player.correctArray[count] = guess;
+							miss = false;
+						}
+						count++;
 					}
-					count++;
-				}
-				if (miss) {
-					player.missesArray.add(guess);
-					player.misses++;
+					if (miss) {
+						player.missesArray.add(guess);
+						player.misses++;
+					}
+				} else {
+					continue;	
 				}
 			} else {
 				continue;
 			}
+		}	
+	}
+	
+	public static boolean checkForWin() {
+		if (player.misses == player.missesMax) {
 			for (int i = 0; i < player.wordArray.length; i++) {
 				if (validateCharAlpha(player.correctArray[i])) {
 					if (player.correctArray[i] != player.wordArray[i]) {
-						continue restartLoop;
-					} else {
-						valid = true;
-					}
+						System.out.println("ERROR - restarting game...");
+						return true;
+					} 
 				} else {
-					continue restartLoop;
+					System.out.println("ERROR - restarting game...");
+					return true;
 				}
-			}
-		}	
+			}	
+			player.win = true;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 //	public static void displayGameOver() {
@@ -114,7 +143,10 @@ public class HangManUtil {
 		boolean valid = false;
 		while(!valid) {
 			String in = scnr.nextLine().trim();
-			if (in.matches("[0-9]")) {
+			if (in.isEmpty()) {
+				System.out.print("Perhaps check your numlock and try again... ");
+				continue;					
+			} else if (in.matches("[0-9]")) {
 				input = Integer.parseInt(in);
 				if (input >= 1 && input <= menuCount) {
 					return input;
@@ -122,9 +154,6 @@ public class HangManUtil {
 					System.out.print("Sorry, " + input + " is not a menu option, try again... ");
 					continue;
 				}
-			} else if (in.isEmpty()) {
-				System.out.print("Perhaps check your numlock and try again... ");
-				continue;					
 			} else {
 				System.out.print("Looking for numbers, try again... ");
 				continue;
@@ -134,9 +163,13 @@ public class HangManUtil {
 	}
 	
 	public static boolean validateCharAlpha(char character) {
-		String charString = Character.toString(character);
-		if (charString.contains("[a-zA-Z]")) {
-			return true;
+		if (character != 0) {
+			String charString = Character.toString(character);
+			if (charString.contains("[a-zA-Z]")) {
+				return true;
+			} else {
+				return false;
+			}			
 		} else {
 			return false;
 		}

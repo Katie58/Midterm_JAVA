@@ -15,6 +15,7 @@ public class Hangman {
 	public int missesMax;
 	public int misses;
 	public char guess;
+	public boolean win;
 	//public int score;//possible extended challenge
 	
 	public Hangman() {
