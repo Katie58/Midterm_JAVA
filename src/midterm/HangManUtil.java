@@ -23,7 +23,8 @@ public class HangManUtil {
 		
 		System.out.println("1) Play Menu");
 		System.out.println("2) High Scores");
-		System.out.println("3) Exit");
+		System.out.println("3) Credits");
+		System.out.println("4) Exit");
 		
 		do {
 			try {
@@ -32,7 +33,7 @@ public class HangManUtil {
 				scnr.nextLine();
 			} catch(InputMismatchException e) {
 				System.out.println("Invalid input. Please try again.");
-				scnr.nextLine();///////////menu not clearing, needs to move to try
+				scnr.nextLine();
 				continue;
 			}
 			
@@ -43,8 +44,10 @@ public class HangManUtil {
 				case 1: playMenu();
 					break;
 				case 2: highScores();
-					break;////////////////add credits(); to list
-				case 3: ;
+					break;
+				case 3: credits();
+					break;
+				case 4: ;
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
@@ -73,7 +76,7 @@ public class HangManUtil {
 		}
 		int count = 1;
 		for (Map.Entry<Integer, String> set : ordered.entrySet()) {
-			System.out.println(count + ". " + set.getValue() + padding(length + 5, ' ') + set.getKey());
+			System.out.println(count + ". " + set.getValue() + padding(length - set.getValue().length() - set.getKey().toString().length() + 5, ' ') + set.getKey());
 			count++;
 		}
 		System.out.print("\nEnter any key to continue... ");
@@ -228,6 +231,7 @@ public class HangManUtil {
 		}
 		if (player.win) {
 			player.time = timer.time;
+			System.out.println("That's CORRECT, the word is " + player.word + "!");
 			System.out.println("Congratulations " + player.getUserName() + "! YOU WON!!! in " + player.time + " seconds!");
 
 			if (addHighScore()) {
@@ -242,10 +246,6 @@ public class HangManUtil {
 	}	
 	
 	public static String displayGame() {
-		/* create switch and/or enum to display underscores & correctly guessed chars */
-		/* display current misses and/or available misses */
-		/* extended challenge center everything based on console width */
-		/* extended challenge add ascii art to replicate hangman */	
 		String progress = "";
 	    for (char letter : player.wordArray) {
 	      char display = '-';
@@ -258,14 +258,6 @@ public class HangManUtil {
 	    }
 	    return progress;
 	  }
-	
-//	public static String padding(int multiplier, char character) {//extended challenge
-//		String multiples = "";
-//		for (int i = 1; i <= multiplier; i++) {
-//			multiples += character;
-//		}
-//		return multiples;
-//	}
 	
 	public static void guess() {
 		boolean valid = false;
@@ -413,9 +405,9 @@ public class HangManUtil {
 		}		
 	}
 	/////////////////////////////// PADDING ////////////////////////////////////
-	public static String padding(int multiple, char character) {
+	public static String padding(int multiplier, char character) {
 		String pad = "";
-		for (int i = 1; i <= multiple; i++) {
+		for (int i = 1; i <= multiplier; i++) {
 			pad += character;
 		}
 		return pad;
