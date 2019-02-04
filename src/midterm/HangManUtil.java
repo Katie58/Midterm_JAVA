@@ -46,7 +46,7 @@ public class HangManUtil {
 				case 1: playMenu();
 					break;
 				case 2: highScores();
-					break;
+					break;////////////////add credits(); to list
 				case 3: ;/////////////////wasn't exiting program, I deleted exit() to test
 					break;
 				default: System.out.println("Invalid input! Please try again.");
@@ -56,8 +56,8 @@ public class HangManUtil {
 		
 		}
 
-	public static void highScores() {
-		//clearScnr();//******************clearing from main menu select		
+	public static void highScores() {	
+		System.out.println();
 		System.out.println("===============");
 		System.out.println("| HIGH SCORES |");
 		System.out.println("===============");
@@ -72,6 +72,12 @@ public class HangManUtil {
 			System.out.println(count + ". " + timeName[1] + "....." + timeName[0]);
 			count++;
 		}
+		System.out.print("\nEnter any key to continue... ");
+		scnr.nextLine();
+	}
+	
+	public static void credits() {
+		System.out.println("\nJAVA DEV TEAM:\n~Vell~\n~Katie~");
 		System.out.print("\nEnter any key to continue... ");
 		scnr.nextLine();
 	}
@@ -116,14 +122,14 @@ public class HangManUtil {
 	}
 	
 	public static void difficulty() {
-		//clearScnr();//********************clearing play menu select
+		String[] difficulties = new String[] { "easy", "intermediate", "hard", "extreme", "custom" };
+		System.out.println();
 		boolean retry = true;
 		while(retry) {
-			String[] difficulties = new String[] { "easy", "intermediate", "hard", "extreme", "custom" };
 			for (int i = 0; i < difficulties.length; i++) {
 				System.out.println((i + 1) + ") " + difficulties[i]);
 			}
-			System.out.print("Choose your difficulty level: ");
+			System.out.print("\nChoose your difficulty level: ");
 			int select = validateMenu(difficulties.length);
 			player.difficulty = difficulties[select - 1];
 			retry = !askUserYN("You selected " + player.difficulty + ", is this correct? ");			
@@ -145,29 +151,29 @@ public class HangManUtil {
 	public static void customMisses() {
 		boolean retry = true;
 		while(retry) {
-			System.out.print("How many tries do you plan to give yourself? ");
+			System.out.print("How many tries do you plan to give yourself "+ player.getUserName() + "? ");
 			if (scnr.hasNextInt()) {
 				player.missesMax = scnr.nextInt();
 				scnr.nextLine();
 				if (player.missesMax < 1) {
-					System.out.println("That's impossible!!!! try again...");
+					System.out.println("That's impossible " + player.getUserName() + "!!!! try again...");
 					continue;
 				}
 				if (player.missesMax > 26) {
-					System.out.println("There are only 26 letters in the alphabet, try again...");
+					System.out.println("There are only 26 letters in the alphabet " + player.getUserName() + ", try again...");
 					continue;
 				}
 			} else {
 				System.out.println("Is your numlock on? try again... ");
 				continue;
 			}
-			retry = !askUserYN("Are you sure you can win in " + player.missesMax + " tries?");
+			retry = !askUserYN(player.getUserName() + ", are you sure you can win in " + player.missesMax + " tries???");
 		}		
 	}
 	
 	public static void selectCategory() {
-		//clearScnr();//********************clearing play menu select
 		CategoryFiles.categoryList();//populate category list from files
+		System.out.println();
 		boolean retry = true;
 		while(retry) {
 			int count = 0;
@@ -176,7 +182,7 @@ public class HangManUtil {
 				category = category.replace(".txt", "");
 				System.out.println(count + ") " + category);
 			}
-			System.out.print("Select your a category: ");
+			System.out.print("\nSelect a category: ");
 			int select = validateMenu(CategoryFiles.categories.size());//user select category
 			count = 0;
 			for (String category : CategoryFiles.categories) {//set category
@@ -191,9 +197,8 @@ public class HangManUtil {
 		CategoryFiles.categoryList = CategoryFiles.readFile("categories/" + player.category);
 	}
 	/////////////////////////////// PLAY GAME ///////////////////////////////////	
-	public static void play() {/* ENTRY FROM PLAY MENU */
-		clearScnr();//**************clearing from play menu select
-		Timer timer = new Timer();
+	public static void setVariables() {
+		player.misses = 0;
 		player.setDefaults();
 		player.randomWord();//get/set random word from category
 		player.wordArray = player.word.toCharArray();
@@ -206,7 +211,12 @@ public class HangManUtil {
 				player.correctArray[i] = player.wordArray[i];
 			}			
 		}
-		player.win = false;
+		player.win = false;		
+	}
+	
+	public static void play() {/* ENTRY FROM PLAY MENU */
+		setVariables();
+		Timer timer = new Timer();
 		boolean gameOver = false;
 		while(!gameOver) {
 			displayGame();
@@ -215,16 +225,15 @@ public class HangManUtil {
 		}
 		if (player.win) {
 			player.time = timer.getTime();
-			System.out.println("Congratulations! YOU WON!!! in " + player.time + " seconds!");
+			System.out.println("Congratulations " + player.getUserName() + "! YOU WON!!! in " + player.time + " seconds!");
 			if (addHighScore()) {
 				System.out.println("*****NEW HIGH SCORE*****");
 			}
 		} else {
-			System.out.println("YOU LOST :(");
-		}
-		if (player.misses != 0) {
-			player.missesArray.clear();	
+			System.out.println("YOU LOST " + player.getUserName() + " :(");
 		}	
+		System.out.print("Enter any key to continue... ");
+		scnr.nextLine();
 	}	
 	
 	public static void displayGame() {
@@ -248,7 +257,7 @@ public class HangManUtil {
 		while(!valid) {
 			System.out.print("\nEnter letter: ");
 			String input = scnr.nextLine().trim();
-			if (!input.isEmpty()) {
+			if (!input.isEmpty() && input.length() == 1) {
 				char guess = input.charAt(0);
 				if (validateCharAlpha(guess)) {
 					player.setGuess(guess);
@@ -258,7 +267,7 @@ public class HangManUtil {
 					char guessUpper = input.toUpperCase().charAt(0);
 					for (char letter : player.correctArray) {
 						if (letter == guessLow || letter == guessUpper) {
-							System.out.print(" already on the board, try again...");
+							System.out.println(guess + " already on the board, try again...");
 							miss = false;
 							break;
 						}
@@ -266,7 +275,7 @@ public class HangManUtil {
 					if (player.misses != 0) {
 						for (char letter : player.missesArray) {
 							if (letter == guessLow || letter == guessUpper) {
-								System.out.print(" already guessed that, try again...");
+								System.out.println(guess + " already guessed that, try again...");
 								miss = false;
 								break;
 							}
@@ -289,6 +298,7 @@ public class HangManUtil {
 					continue;	
 				}
 			} else {
+				System.out.println(player.getUserName() + " what was that? try again...");
 				continue;
 			}
 		}	
@@ -338,18 +348,18 @@ public class HangManUtil {
 		while(!valid) {
 			String in = scnr.nextLine().trim();
 			if (in.isEmpty()) {
-				System.out.print("Perhaps check your numlock and try again... ");
+				System.out.print("Perhaps check your numlock " + player.getUserName() + ", try again... ");
 				continue;					
 			} else if (in.matches("[0-9]")) {
 				input = Integer.parseInt(in);
 				if (input >= 1 && input <= menuCount) {
 					return input;
 				} else {
-					System.out.print("Sorry, " + input + " is not a menu option, try again... ");
+					System.out.print("Sorry " + player.getUserName() + ", " + input + " is not a menu option, try again... ");
 					continue;
 				}
 			} else {
-				System.out.print("Looking for numbers, try again... ");
+				System.out.print("Looking for numbers " + player.getUserName() + ", try again... ");
 				continue;
 			}
 		}
@@ -366,7 +376,6 @@ public class HangManUtil {
 	}
 	/////////////////////////////// YES | NO ////////////////////////////////////
  	public static boolean askUserYN(String question) {//ask user a yes/no question
- 		//String clear = scnr.nextLine();//********************clearing menu select won't work because I call this method at other times throughout program
 		System.out.print("\n" + question + " (y/n) ");
 		return validateYesNo(scnr.nextLine().charAt(0));
 	}
@@ -380,15 +389,11 @@ public class HangManUtil {
 	}
 	//////////////////////////////// EXIT //////////////////////////////////////
 	public static void exit() {
-		System.out.println("Nice playing with you, catch you later!");
+		System.out.println("Nice playing with you " + player.getUserName() + ", catch you later!");
 		scnr.close();
 		if (player.word != null) {
 			CategoryFiles.closeReader();
 		}		
-	}
-	//////////////////////////// CLEAR SCANNER ///////////////////////////////////
-	public static void clearScnr() {
-		String clear = scnr.nextLine();
 	}
 	
 }

@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 
 public class CategoryFiles {
@@ -38,15 +42,15 @@ public class CategoryFiles {
 	}
 	
 	public static void writeToFile(ArrayList<String> list, String fileName) {
+		Path txt = Paths.get("HighScores");
 		File remove = new File(fileName);
 		remove.delete();
-		File newFile = new File(fileName);
 
 		try {
-		    write = new FileWriter(newFile, false);
-		    for (String line : list) {
-		    	write.write(line);
-		    }
+			for (String line : list) {
+				line = line + "\n";
+				Files.write(txt, line.getBytes(), StandardOpenOption.APPEND);
+			}
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
