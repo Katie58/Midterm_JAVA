@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class CategoryFiles {
 	static BufferedReader reader;
-	static FileWriter write;
 	static ArrayList<String> categories = new ArrayList<String>();//list of files
 	static ArrayList<String> categoryList = new ArrayList<String>();//list of words in category file
 
@@ -64,7 +63,6 @@ public class CategoryFiles {
 	public static void closeReader() {
 		try {
 			reader.close();
-			write.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
