@@ -2,7 +2,6 @@ package midterm;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 
 public class CategoryFiles {
 	static BufferedReader reader;
-	static FileWriter write;
 	static ArrayList<String> categories = new ArrayList<String>();//list of files
 	static ArrayList<String> categoryList = new ArrayList<String>();//list of words in category file
 
@@ -64,7 +62,6 @@ public class CategoryFiles {
 	public static void closeReader() {
 		try {
 			reader.close();
-			write.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
