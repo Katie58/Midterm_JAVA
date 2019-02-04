@@ -97,6 +97,7 @@ public class HangManUtil {
 			try {
 				System.out.print(player.getUserName() + " what would you like to do?: ");
 				selection = scnr.nextInt();
+				scnr.nextLine();
 			} catch(InputMismatchException e) {
 				System.out.println("Invalid input. Please try again.");
 				clear = scnr.nextLine();
@@ -107,7 +108,7 @@ public class HangManUtil {
 		
 		do {
 			switch(selection) {
-				case 1: displayGame();
+				case 1: play();
 					break;
 				case 2:  difficulty();
 					break;
@@ -202,6 +203,7 @@ public class HangManUtil {
 		player.setDefaults();
 		player.randomWord();//get/set random word from category
 		player.wordArray = player.word.toCharArray();
+		player.correctWord = "";
 		player.correctArray = new char[player.wordArray.length];
 		player.missesArray = new ArrayList<Character>();
 		for (int i = 0; i < player.correctArray.length; i++) {
@@ -219,13 +221,14 @@ public class HangManUtil {
 		Timer timer = new Timer();
 		boolean gameOver = false;
 		while(!gameOver) {
-			displayGame();
+			System.out.println("You have " + (player.missesMax - player.misses) + " left " + displayGame());
 			guess();
 			gameOver = checkForWin();
 		}
 		if (player.win) {
-			player.time = timer.getTime();
+			player.time = timer.time;
 			System.out.println("Congratulations " + player.getUserName() + "! YOU WON!!! in " + player.time + " seconds!");
+
 			if (addHighScore()) {
 				System.out.println("*****NEW HIGH SCORE*****");
 			}
@@ -236,12 +239,23 @@ public class HangManUtil {
 		scnr.nextLine();
 	}	
 	
-	public static void displayGame() {
+	public static String displayGame() {
 		/* create switch and/or enum to display underscores & correctly guessed chars */
 		/* display current misses and/or available misses */
 		/* extended challenge center everything based on console width */
-		/* extended challenge add ascii art to replicate hangman */
-	}
+		/* extended challenge add ascii art to replicate hangman */	
+		String progress = "";
+	    for (char letter : player.wordArray) {
+	      char display = '-';
+	      if(!Character.isLetter(letter))
+	    	  display = letter;
+	      if (player.correctWord.indexOf(letter) != -1) {
+	        display = letter;
+	      }
+	      progress += display;
+	    }
+	    return progress;
+	  }
 	
 //	public static String padding(int multiplier, char character) {//extended challenge
 //		String multiples = "";
@@ -284,6 +298,7 @@ public class HangManUtil {
 					for (char letter : player.wordArray) {
 						if (letter == guessLow || letter == guessUpper) {
 							player.correctArray[count] = player.wordArray[count];
+							player.correctWord += player.wordArray[count];
 							miss = false;
 							valid = true;
 						}

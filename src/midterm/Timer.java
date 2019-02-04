@@ -3,7 +3,7 @@ import java.util.TimerTask;
 
 public class Timer {
 	
-	private int time = 0;
+	public int time = 0;
 		
 	public int getTime() {
 		return time;
