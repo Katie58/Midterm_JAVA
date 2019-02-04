@@ -33,6 +33,7 @@ public class HangManUtil {
 			try {
 				System.out.print(player.getUserName() + " what would you like to do?: ");
 				selection = scnr.nextInt();
+				scnr.nextLine();
 			} catch(InputMismatchException e) {
 				System.out.println("Invalid input. Please try again.");
 				clear = scnr.nextLine();///////////menu not clearing, needs to move to try
@@ -47,7 +48,7 @@ public class HangManUtil {
 					break;
 				case 2: highScores();
 					break;////////////////add credits(); to list
-				case 3: ;/////////////////wasn't exiting program, I deleted exit() to test
+				case 3: ;   /////////////////wasn't exiting program, I deleted exit() to test
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
@@ -114,7 +115,7 @@ public class HangManUtil {
 					break;
 				case 3: selectCategory();
 					break;
-				case 4: exit();
+				case 4: ;
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
@@ -233,7 +234,8 @@ public class HangManUtil {
 				System.out.println("*****NEW HIGH SCORE*****");
 			}
 		} else {
-			System.out.println("YOU LOST " + player.getUserName() + " :(");
+			System.out.println("YOU LOST " + player.getUserName() + " the word was "
+					+ player.word + " :(");
 		}	
 		System.out.print("Enter any key to continue... ");
 		scnr.nextLine();
