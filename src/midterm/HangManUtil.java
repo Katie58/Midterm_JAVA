@@ -2,6 +2,7 @@ package midterm;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.TreeSet;
 
 public class HangManUtil {
@@ -186,12 +187,12 @@ public class HangManUtil {
 		player.win = false;
 		boolean gameOver = false;
 		while(!gameOver) {
-			displayGame();
+			System.out.println(displayGame());
 			guess();
 			gameOver = checkForWin();
 		}
 		if (player.win) {
-			player.time = timer.getTime();
+		//	player.time = timer.getTime();
 			System.out.println("Congratulations! YOU WON!!! in " + player.time + " seconds!");
 			if (addHighScore()) {
 				System.out.println("*****NEW HIGH SCORE*****");
@@ -201,12 +202,21 @@ public class HangManUtil {
 		}
 	}	
 	
-	public static void displayGame() {
+	public static String displayGame() {
 		/* create switch and/or enum to display underscores & correctly guessed chars */
 		/* display current misses and/or available misses */
 		/* extended challenge center everything based on console width */
 		/* extended challenge add ascii art to replicate hangman */
-	}
+		String progress = "";
+	    for (char letter : player.wordArray) {
+	      char display = '-';
+	      if (player.correctWord.indexOf(letter) != -1) {
+	        display = letter;
+	      }
+	      progress += display;
+	    }
+	    return progress;
+	  }
 	
 //	public static String padding(int multiplier, char character) {//extended challenge
 //		String multiples = "";

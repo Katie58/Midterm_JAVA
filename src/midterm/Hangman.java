@@ -12,6 +12,7 @@ public class Hangman {
 	public String word;
 	public char[] wordArray;
 	public char[] correctArray;
+	public String correctWord;
 	public ArrayList<Character> missesArray;
 	public int missesMax;
 	public int misses;
