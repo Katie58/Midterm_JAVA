@@ -1,25 +1,12 @@
-package midterm;
-
-public class HighScore {
-	private String name;
-	private int score;
-	
-	public HighScore(String name, int score) {
-		this.name = name;
-		this.score = score;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	@Override
-	public String toString() {
-		return name + ", " + score;
-	}
-
-}
+//package midterm;
+//
+//public class HighScore implements Comparable<Hangman> {
+//	private String name;
+//	private int time;
+//
+//	@Override
+//	public int compareTo(Hangman o) {
+//		return time.compareTo(o.time);
+//	}
+//	
+//}

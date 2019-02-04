@@ -1,8 +1,9 @@
 package midterm;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Map;
 import java.util.Scanner;
-import java.util.TreeSet;
+import java.util.TreeMap;
 
 public class HangManUtil {
 	static Scanner scnr = new Scanner(System.in);
@@ -18,12 +19,7 @@ public class HangManUtil {
 	}
 	////////////////////////////// MAIN MENU ////////////////////////////////////
 	public static void menu() {/* ENTRY FROM MAIN METHOD */
-		/* display menu, take user selection, send to corresponding method */
-		/* menu items: 1. Play Game 2. High Scores */
-		/* method can be bypassed and deleted if timer/score not implemented */
-		/* extended challenge 2-player, let a player choose word */
 		int selection = 0;
-		String clear;
 		
 		System.out.println("1) Play Menu");
 		System.out.println("2) High Scores");
@@ -36,7 +32,7 @@ public class HangManUtil {
 				scnr.nextLine();
 			} catch(InputMismatchException e) {
 				System.out.println("Invalid input. Please try again.");
-				clear = scnr.nextLine();///////////menu not clearing, needs to move to try
+				scnr.nextLine();///////////menu not clearing, needs to move to try
 				continue;
 			}
 			
@@ -48,7 +44,7 @@ public class HangManUtil {
 					break;
 				case 2: highScores();
 					break;////////////////add credits(); to list
-				case 3: ;   /////////////////wasn't exiting program, I deleted exit() to test
+				case 3: ;
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
@@ -63,14 +59,21 @@ public class HangManUtil {
 		System.out.println("| HIGH SCORES |");
 		System.out.println("===============");
 		ArrayList<String> highScore = CategoryFiles.readFile("HighScores");
-		TreeSet<String> ordered = new TreeSet<String>();
+		int length = 0;
+		for (String timeName : highScore) {
+			if (timeName.length() > 0) {
+				length = timeName.length();
+			}
+		}
+		TreeMap<Integer, String> ordered = new TreeMap<Integer, String>();
 		for (String score : highScore) {
-			ordered.add(score);
+			String[] timeName = score.split(":");
+			int t = Integer.parseInt(timeName[0]);
+			ordered.put(t, timeName[1]);
 		}
 		int count = 1;
-		for (String score : ordered) {
-			String[] timeName = score.split(":");
-			System.out.println(count + ". " + timeName[1] + "....." + timeName[0]);
+		for (Map.Entry<Integer, String> set : ordered.entrySet()) {
+			System.out.println(count + ". " + set.getValue() + padding(length + 5, ' ') + set.getKey());
 			count++;
 		}
 		System.out.print("\nEnter any key to continue... ");
@@ -84,10 +87,7 @@ public class HangManUtil {
 	}
 	/////////////////////////////// PLAY MENU ///////////////////////////////////
 	public static void playMenu() {/* ENTRY FROM MAIN MENU */
-		/* display menu, take user selection, send to corresponding method */
-		/* menu items: 1. Play Game 2. Difficulty 3. Select Category 4. Exit */
 		int selection = 0;
-		String clear;
 		
 		System.out.println("1) Play Game");
 		System.out.println("2) Difficulty");
@@ -101,7 +101,7 @@ public class HangManUtil {
 				scnr.nextLine();
 			} catch(InputMismatchException e) {
 				System.out.println("Invalid input. Please try again.");
-				clear = scnr.nextLine();
+				scnr.nextLine();
 				continue;
 			}
 			
@@ -412,6 +412,13 @@ public class HangManUtil {
 			CategoryFiles.closeReader();
 		}		
 	}
-	
+	/////////////////////////////// PADDING ////////////////////////////////////
+	public static String padding(int multiple, char character) {
+		String pad = "";
+		for (int i = 1; i <= multiple; i++) {
+			pad += character;
+		}
+		return pad;
+	}
 }
 
