@@ -8,6 +8,8 @@ import java.util.TreeMap;
 public class HangManUtil {
 	static Scanner scnr = new Scanner(System.in);
 	static Hangman player = new Hangman();
+	static boolean flag = true;
+	static boolean f = true;
 	
 
 	/////////////////////////////// GREETING ////////////////////////////////////
@@ -47,12 +49,12 @@ public class HangManUtil {
 					break;
 				case 3: credits();
 					break;
-				case 4: ;
+				case 4: flag = false;
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
 			}
-		} while (false);
+		} while (flag);
 		
 		}
 
@@ -118,12 +120,12 @@ public class HangManUtil {
 					break;
 				case 3: selectCategory();
 					break;
-				case 4: ;
+				case 4: f = false;
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
 			}
-		} while(false);
+		} while(f);
 	}
 	
 	public static void difficulty() {
@@ -348,7 +350,7 @@ public class HangManUtil {
 	}
 	
 //	public static void displayGameOver() {
-//		/* extended challenge ascii art */
+//		/* extended challenge  */
 //	}
 	////////////////////////////// VALIDATORS //////////////////////////////////
 	public static int validateMenu(int menuCount) {
