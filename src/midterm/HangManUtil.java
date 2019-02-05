@@ -7,6 +7,8 @@ import java.util.TreeSet;
 public class HangManUtil {
 	static Scanner scnr = new Scanner(System.in);
 	static Hangman player = new Hangman();
+	static boolean flag = true;
+	static boolean f = true;
 	
 
 	/////////////////////////////// GREETING ////////////////////////////////////
@@ -48,12 +50,12 @@ public class HangManUtil {
 					break;
 				case 2: highScores();
 					break;////////////////add credits(); to list
-				case 3: ;   /////////////////wasn't exiting program, I deleted exit() to test
+				case 3: ;  flag = false; /////////////////wasn't exiting program, I deleted exit() to test
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
 			}
-		} while (false);
+		} while (flag);
 		
 		}
 
@@ -115,12 +117,12 @@ public class HangManUtil {
 					break;
 				case 3: selectCategory();
 					break;
-				case 4: ;
+				case 4: f = false;
 					break;
 				default: System.out.println("Invalid input! Please try again.");
 					continue;
 			}
-		} while(false);
+		} while(f);
 	}
 	
 	public static void difficulty() {
@@ -356,7 +358,7 @@ public class HangManUtil {
 	}
 	
 //	public static void displayGameOver() {
-//		/* extended challenge ascii art */
+//		/* extended challenge  */
 //	}
 	////////////////////////////// VALIDATORS //////////////////////////////////
 	public static int validateMenu(int menuCount) {
