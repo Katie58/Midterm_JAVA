@@ -7,12 +7,12 @@ public class Hangman {
 
 	private String userName;
 	
-	public String category = "default";/////default maybe random?
-	public String difficulty = "default";///easy?
+	public String category = "default";
+	public String difficulty = "default";
 	public String word;
 	public char[] wordArray;
 	public char[] correctArray;
-	public String correctWord;
+	public String correctWord;	
 	public ArrayList<Character> missesArray;
 	public int missesMax;
 	public int misses;
