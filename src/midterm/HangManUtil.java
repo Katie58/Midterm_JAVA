@@ -15,8 +15,6 @@ public class HangManUtil {
 
 	static boolean f = true;
 
-
-
 	/////////////////////////////// GREETING ////////////////////////////////////
 
 	public static void greeting() {//get user name, store in object
@@ -25,10 +23,9 @@ public class HangManUtil {
 
 		System.out.print("Welcome to Hangman what is your name?: ");
 
-		name = scnr.next();
+		name = scnr.nextLine();
 
 		player.setUserName(name);
-
 	}
 
 	////////////////////////////// MAIN MENU ////////////////////////////////////
@@ -36,66 +33,55 @@ public class HangManUtil {
 	public static void menu() {/* ENTRY FROM MAIN METHOD */
 
 		int selection = 0;
-
+		String clear = "";
+		 
 		do {
-
 			System.out.println("1) Play Menu");
-
 			System.out.println("2) High Scores");
-
 			System.out.println("3) Credits");
-
 			System.out.println("4) Exit");
 
-		
-
+			System.out.print(player.getUserName() + " what would you like to do?: ");
 			try {
-
-				System.out.print(player.getUserName() + " what would you like to do?: ");
-
 				selection = scnr.nextInt();
-
-				//scnr.nextLine();
-
+				
 			} catch(InputMismatchException e) {
-
+				
 				System.out.println("Invalid input. Please try again.");
-
-				scnr.nextLine();
-
-				continue;
+				clear = scnr.nextLine();
+				System.out.println(clear);
+				System.out.println(selection);
+				//continue;
 
 			}
-
 			
-
-			switch(selection) {
-
-				case 1: playMenu();
-
-					break;
-
-				case 2: highScores();
-
-					break;
-
-				case 3: credits();
-
-					break;
-
-				case 4: flag = false;
-
-					break;
-
-				default: System.out.println("Invalid input! Please try again.");
-					break;
-
+			if(clear == "3") {
+				System.out.println("Works");
 			}
+//			switch(selection) {
+//
+//				case "1": playMenu();
+//
+//					break;
+//
+//				case "2": highScores();
+//
+//					break;
+//
+//				case "3": credits();
+//
+//					break;
+//
+//				case "4": flag = false;
+//
+//					break;
+//
+//				default: System.out.println("Invalid input! Please try again.");
+//					break;
+
+			//}
 
 		} while (flag);
-
-		
-
 		}
 
 
@@ -145,15 +131,9 @@ public class HangManUtil {
 			count++;
 
 		}
-
-		
-
 		System.out.print("\nEnter any key to continue... ");
 
 		scnr.nextLine();
-
-		 
-
 	}
 
 	
@@ -174,20 +154,12 @@ public class HangManUtil {
 
 		int selection = 0;
 
-		
-
 		do {
-
 			System.out.println("1) Play Game");
-
 			System.out.println("2) Difficulty");
-
 			System.out.println("3) Select Category");
-
 			System.out.println("4) Main Menu");
-
 		
-
 			try {
 
 				System.out.print(player.getUserName() + " what would you like to do?: ");
@@ -207,7 +179,6 @@ public class HangManUtil {
 			}
 
 			
-
 			switch(selection) {
 
 				case 1: play();
@@ -449,9 +420,7 @@ public class HangManUtil {
 			player.time = timer.getTime();
 
 			System.out.println("That's CORRECT, the word is " + player.word + "!");
-
-			
-
+			MusicClass.playWinSound();
 			System.out.println("Congratulations " + player.getUserName() + "! YOU WON!!! in " + player.time + " seconds!");
 
 
@@ -463,9 +432,7 @@ public class HangManUtil {
 			}
 
 		} else {
-
-			
-
+			MusicClass.playLoseSound();
 			System.out.println("YOU LOST " + player.getUserName() + " the word was "
 
 					+ player.word + " :(");
@@ -575,9 +542,7 @@ public class HangManUtil {
 							player.correctArray[count] = player.wordArray[count];
 
 							player.correctWord += player.wordArray[count];
-
-							
-
+							MusicClass.playCorrectSound();
 							miss = false;
 
 							valid = true;
@@ -594,8 +559,7 @@ public class HangManUtil {
 
 						player.misses++;
 
-						
-
+						MusicClass.playWrongSound();
 						valid = true;
 
 					}
